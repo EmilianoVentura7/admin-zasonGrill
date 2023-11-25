@@ -1,8 +1,8 @@
-# Sazon
+# SazonGrill
 
 ## Descripción
 
-Sazon es una aplicación que facilita la gestión de pedidos y ventas para un restaurante o establecimiento de comida.
+SazonGrill es una aplicación que facilita la gestión de pedidos y ventas para un restaurante o establecimiento de comida.
 
 ## Versiones de Tecnologías Utilizadas
 
