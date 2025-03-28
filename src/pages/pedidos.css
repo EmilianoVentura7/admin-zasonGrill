@@ -1,0 +1,55 @@
+/* Estilos para el toggle switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px; /* Aumentar el ancho */
+  height: 30px; /* Aumentar el alto */
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px; /* Aumentar el tamaño de la palanca */
+  width: 20px;  /* Aumentar el tamaño de la palanca */
+  border-radius: 50px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+/* Cuando el input está marcado */
+input:checked + .slider {
+  background-color: #73b357;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px); /* Ajuste para el movimiento */
+}
+
+/* Estilo redondeado */
+.slider.round {
+  border-radius: 50px;
+}
+
+.slider.round:before {
+  border-radius: 50px;
+}
