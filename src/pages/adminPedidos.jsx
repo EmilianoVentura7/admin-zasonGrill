@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Pusher from "pusher-js";
 import Navbar from "../components/Navbar";
 import Modal from "../components/PedidoModal";
 import pedidos from "../img/comida-a-domicilio.png";
@@ -7,7 +6,6 @@ import pedidos from "../img/comida-a-domicilio.png";
 function AdminPedidos() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState([]);
-  const [token] = useState(null);
   const [selectedPedido, setSelectedPedido] = useState(null);
 
   const handleVerPedidoClick = (pedido) => {
@@ -23,28 +21,22 @@ function AdminPedidos() {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await fetch(
-        "http://localhost:8080/admin/pedidos-pusher",
-        {
-          method: "GET",
-          headers: {
-            Authorization: `${token}`,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:8080/admin/pedidos", {
+        method: "GET",
+        headers: {
+          Authorization: `${token}`,
+        },
+      });
+
       const responseData = await response.json();
       console.log(responseData);
 
       if (responseData.error) {
         console.error("Error del servidor:", responseData.error);
-      } else if (
-        typeof responseData === "object" &&
-        responseData.initialData &&
-        Array.isArray(responseData.initialData)
-      ) {
-        setData(responseData.initialData);
+      } else if (Array.isArray(responseData.data)) {
+        setData(responseData.data);
       } else {
-        console.error("Los datos iniciales no son un array:", responseData);
+        console.error("Los datos no son un array:", responseData);
       }
     } catch (error) {
       console.error("Error al obtener datos:", error);
@@ -52,25 +44,8 @@ function AdminPedidos() {
   };
 
   useEffect(() => {
-    // Obtener token de localStorage al cargar el componente
-
-    const pusher = new Pusher("d43c50bd42af051a68a0", {
-      cluster: "mt1",
-    });
-
-    const channel = pusher.subscribe("canal-pedidos");
-
-    channel.bind("nuevo-pedido", (newData) => {
-      fetchData();
-      setData((prevData) => [...prevData, newData]);
-    });
-
     fetchData();
-
-    return () => {
-      pusher.unsubscribe("canal-pedidos");
-    };
-  }, [token]);
+  }, []);
 
   return (
     <div className="h-screen overflow-auto" style={{ backgroundColor: "#242424" }}>
@@ -86,7 +61,7 @@ function AdminPedidos() {
           {/* Cards de Pedidos */}
           {data.map((pedido, index) => (
             <div
-              key={index}
+              key={pedido.id_pedido}
               className="p-4 rounded shadow shadow-black/100 transition-transform transform-gpu hover:scale-105"
               style={{ backgroundColor: "#424040" }}
             >
@@ -111,6 +86,8 @@ function AdminPedidos() {
           ))}
         </div>
       </div>
+
+      {/* Modal */}
       {isModalOpen && selectedPedido && (
         <Modal onClose={handleCloseModal} pedido={selectedPedido} />
       )}
