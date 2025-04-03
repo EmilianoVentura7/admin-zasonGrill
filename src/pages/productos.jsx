@@ -11,7 +11,7 @@ function Productos() {
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
-
+ 
       const response = await fetch(`http://localhost:8080/admin/productos`, {
         method: "GET",
         headers: {

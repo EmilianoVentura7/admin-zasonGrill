@@ -26,7 +26,7 @@ function ActualizarModal({ showModal, closeModal, product, updateProduct }) {
     };
 
     updateProduct(updatedProduct);
-    closeModal(); 
+    closeModal(); // Cerrar el modal después de la actualización
   };
 
   return (
